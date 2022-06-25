@@ -42,7 +42,22 @@
                         {{ dog }}
                       {% endfor %}
                   {% endif %}
-                {% for field in form %}
+                {% for field in form_owner %}
+                  <div class="form-group row my-1 p-3">
+                    <span style="color:red">{{ field.errors }}</span>
+                    <label >
+                      {{ field.label }}
+                      {% if field.field.required %}
+                        <span class="required text-danger" >*</span>
+                      {% endif %}
+                    </label>
+                    {{ field }}
+                    <small class="form-text text-muted">
+                      {{ field.help_text }}
+                    </small>
+                  </div>
+                {% endfor %}
+                {% for field in form_adoption %}
                   <div class="form-group row my-1 p-3">
                     <span style="color:red">{{ field.errors }}</span>
                     <label >

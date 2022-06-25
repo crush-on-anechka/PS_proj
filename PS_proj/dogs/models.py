@@ -100,20 +100,7 @@ class Owner(models.Model):
         'Телефон без префикса (10 цифр)',
         max_length=10
     )
-    sobes_status = models.CharField(
-        'Статус собеседования',
-        max_length=200,
-        choices=CHOICES,
-        default='Not_auditioned',
-        blank=False,
-        null=True
-    )
-    sobes_result = models.TextField(
-        'Комментарий',
-        max_length=1000,
-        blank=True,
-        null=True
-    )
+
     add_date = models.DateTimeField(
         'Дата добавления',
         auto_now_add=True
@@ -164,22 +151,6 @@ class Owner(models.Model):
         blank=True,
         null=True
     )
-    had_pets = models.BooleanField(
-        'Были ли домашние животные',
-        blank=True,
-        null=True
-    )
-    large_place = models.BooleanField(
-        'Огромная квартира',
-        blank=True,
-        null=True
-    )
-    contract_signed = models.BooleanField(
-        'Договор подписан',
-        default=False,
-        blank=True,
-        null=True
-    )
 
     class Meta:
         ordering = ['-add_date']
@@ -207,6 +178,36 @@ class Adoption(models.Model):
         'Дата добавления',
         auto_now_add=True
     )
+    contract_signed = models.BooleanField(
+        'Договор подписан',
+        default=False,
+        blank=True,
+        null=True
+    )
+    sobes_status = models.CharField(
+        'Статус собеседования',
+        max_length=200,
+        choices=CHOICES,
+        default='Not_auditioned',
+        blank=False,
+        null=True
+    )
+    sobes_result = models.TextField(
+        'Комментарий',
+        max_length=1000,
+        blank=True,
+        null=True
+    )
+    had_pets = models.BooleanField(
+        'Были ли домашние животные',
+        blank=True,
+        null=True
+    )
+    large_place = models.BooleanField(
+        'Огромная квартира',
+        blank=True,
+        null=True
+    )
 
     class Meta:
         constraints = [
@@ -220,5 +221,5 @@ class Adoption(models.Model):
         verbose_name_plural = "Пристройства"
 
     def __str__(self):
-        adoption = f'{self.owner} x {self.dog}'
+        adoption = f'{self.owner} и {self.dog}'
         return adoption

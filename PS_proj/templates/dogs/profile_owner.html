@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% block title %}
-    Информация о {% if not legitimate %}потенциальном {% endif %}хозяине
+    Информация о хозяине
 {% endblock %}
 {% block content %}
   <div class="container py-5">
@@ -11,7 +11,7 @@
         class="d-inline-block align-top" alt=""> {% endcomment %}
       </aside>
       <article class="col-12 col-md-8">
-        <h3>{{ owner.name }} ({% if not legitimate %}потенциальный {% endif %}хозяин)
+        <h3>{{ owner.name }} (хозяин)
         </h3>
         <ul>
           <li>
@@ -48,17 +48,6 @@
                     <a href="{% url 'dogs:profile_dog' dog.id %}">{{ dog.name }}</a>
                 </li>
             {% endfor %}
-          </ul>
-        {% else %}
-          <ul>
-            <li>
-                Собеседование: {{ owner.get_sobes_status_display }}
-            </li>
-            {% if owner.sobes_result %}
-              <li>
-                  Комментарий зоопсихолога: {{ owner.sobes_result }}
-              </li>
-            {% endif %}
           </ul>
         {% endif %}
         <a class="btn btn-lg btn-secondary" href="{% url 'dogs:edit_owner' owner.id %}">Редактировать</a>

@@ -4,7 +4,7 @@ from .models import Dog, Curator, Owner, Adoption
 
 class DogAdmin(admin.ModelAdmin):
     list_display = ('pk', 'name', 'curator', 'add_date')
-    list_editable = ('curator',)
+    list_editable = ('name', 'curator',)
     search_fields = ('name',)
     list_filter = ('add_date',)
     empty_value_display = '-пусто-'
@@ -12,20 +12,19 @@ class DogAdmin(admin.ModelAdmin):
 
 class CuratorAdmin(admin.ModelAdmin):
     list_display = ('pk', 'name', 'pound')
-    search_fields = ('pound',)
+    search_fields = ('name', 'pound',)
     empty_value_display = '-пусто-'
 
 
 class OwnerAdmin(admin.ModelAdmin):
     list_display = ('pk', 'name', 'add_date')
-    search_fields = ('dog',)
+    search_fields = ('name',)
     list_filter = ('add_date',)
     empty_value_display = '-пусто-'
 
 
 class AdoptionAdmin(admin.ModelAdmin):
-    list_display = ('owner', 'dog', 'add_date')
-    search_fields = ('owner', 'dog',)
+    list_display = ('pk', '__str__', 'add_date')
     list_filter = ('add_date',)
     empty_value_display = '-пусто-'
 

@@ -62,7 +62,7 @@ class AuditForm(forms.ModelForm):
     )
 
     class Meta:
-        model = Owner
+        model = Adoption
         fields = ['had_pets',
                   'large_place',
                   'sobes_status',
@@ -76,12 +76,7 @@ class ChangeOwnerForm(forms.ModelForm):
         fields = ['dog', 'owner']
 
 
-class ContractForm(forms.ModelForm):
-    contract_signed = forms.BooleanField(
-        label='Договор подписан',
-        required=False
-    )
-
+class ContractOwnerForm(forms.ModelForm):
     class Meta:
         model = Owner
         fields = ['name',
@@ -93,6 +88,16 @@ class ContractForm(forms.ModelForm):
                   'address_reg',
                   'address_fact',
                   'email',
-                  'discount_card',
-                  'contract_signed'
+                  'discount_card'
                   ]
+
+
+class ContractAdoptionForm(forms.ModelForm):
+    contract_signed = forms.BooleanField(
+        label='Договор подписан',
+        required=False
+    )
+
+    class Meta:
+        model = Adoption
+        fields = ['contract_signed']

@@ -1,8 +1,9 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from core.paginator import paginator
 from .models import Dog, Curator, Owner, Adoption
-from .forms import (DogForm, CuratorForm, AddOwnerForm, EditOwnerForm,
-                    AuditForm, AdoptionForm, ChangeOwnerForm, ContractForm)
+from .forms import (DogForm, CuratorForm, AddOwnerForm, ContractOwnerForm,
+                    AuditForm, AdoptionForm, ChangeOwnerForm, EditOwnerForm,
+                    ContractAdoptionForm)
 
 
 def dogs(request):
@@ -24,7 +25,7 @@ def curators(request):
 
 def owners(request):
     owners = Owner.objects.exclude(
-        dog_owner__dog__isnull=True).filter(contract_signed=True)
+        dog_owner__dog__isnull=True).filter(dog_owner__contract_signed=True)
     context = {
         'page_object': paginator(request, owners)
     }
@@ -32,7 +33,7 @@ def owners(request):
 
 
 def potential_owners(request):
-    owners = Owner.objects.exclude(contract_signed=False)
+    owners = Owner.objects.exclude(dog_owner__contract_signed=True)
     context = {
         'potential': True,
         'page_object': paginator(request, owners)
@@ -61,27 +62,31 @@ def add_curator(request):
 
 
 def add_owner(request):
-    form = AddOwnerForm(request.POST or None)
-    if not request.method == 'POST' or not form.is_valid():
-        return render(request, 'dogs/add_owner.html', {'form': form})
-    instance = form.save(commit=False)
-    form.save()
+    form_owner = AddOwnerForm(request.POST or None)
+    if not request.method == 'POST' or not form_owner.is_valid():
+        return render(
+            request,
+            'dogs/add_owner.html',
+            {'form_owner': form_owner}
+        )
+    instance = form_owner.save(commit=False)
+    form_owner.save()
     return redirect('dogs:add_adoption', instance.id)
 
 
 def add_adoption(request, owner_id):
     owner = get_object_or_404(Owner, pk=owner_id)
-    form = AdoptionForm(request.POST or None)
-    if not request.method == 'POST' or not form.is_valid():
+    form_owner = AdoptionForm(request.POST or None)
+    if not request.method == 'POST' or not form_owner.is_valid():
         context = {
-            'form': form,
+            'form_owner': form_owner,
             'adopt': True
         }
         return render(request, 'dogs/add_owner.html', context)
 
-    instance = form.save(commit=False)
+    instance = form_owner.save(commit=False)
     instance.owner = owner
-    form.save()
+    form_owner.save()
     return redirect('/')
 
 
@@ -120,44 +125,45 @@ def edit_curator(request, curator_id):
 def edit_owner(request, owner_id):
     owner = get_object_or_404(Owner, id=owner_id)
     dogs = Dog.objects.filter(adopted_dog__owner=owner)
-    form = EditOwnerForm(
+    form_owner = EditOwnerForm(
         request.POST or None,
         instance=owner
     )
-    if form.is_valid():
-        form.save()
+    if form_owner.is_valid():
+        form_owner.save()
         return redirect('dogs:owners')
     context = {
         'dogs': dogs,
         'is_edit': True,
-        'form': form
+        'form_owner': form_owner
     }
     return render(request, 'dogs/add_owner.html', context)
 
 
-def audition(request, owner_id):
-    owner = get_object_or_404(Owner, id=owner_id)
-    dogs = Dog.objects.filter(adopted_dog__owner=owner)
-    form = AuditForm(
+def audition(request, adoption_id):
+    adoption = get_object_or_404(Adoption, id=adoption_id)
+    dog = adoption.dog
+    owner = adoption.owner
+    form_adoption = AuditForm(
         request.POST or None,
-        instance=owner
+        instance=adoption
     )
-    if form.is_valid():
-        form.save()
+    if form_adoption.is_valid():
+        form_adoption.save()
         return redirect('dogs:owners')
     context = {
         'owner': owner,
-        'dogs': dogs,
+        'dog': dog,
         'audit': True,
-        'form': form
+        'form_adoption': form_adoption
     }
     return render(request, 'dogs/add_owner.html', context)
 
 
 def owners_to_audit(request):
-    owners = Owner.objects.filter(sobes_status='Not_auditioned')
+    adoptions = Adoption.objects.filter(sobes_status='Not_auditioned')
     context = {
-        'page_object': paginator(request, owners)
+        'page_object': paginator(request, adoptions)
     }
     return render(request, 'dogs/owners_to_proceed.html', context)
 
@@ -188,10 +194,8 @@ def profile_curator(request, curator_id):
 def profile_owner(request, owner_id):
     owner = get_object_or_404(Owner, id=owner_id)
     dogs = Dog.objects.filter(adopted_dog__owner=owner)
-    legitimate = dogs and owner.sobes_status == 'OK'
     context = {
         'dogs': dogs,
-        'legitimate': legitimate,
         'owner': owner
     }
     return render(request, 'dogs/profile_owner.html', context)
@@ -213,29 +217,37 @@ def change_owner(request, dog_id):
     return redirect('/')
 
 
-def contract(request, owner_id):
-    owner = get_object_or_404(Owner, id=owner_id)
-    dogs = Dog.objects.filter(adopted_dog__owner=owner)
-    form = ContractForm(
+def contract(request, adoption_id):
+    adoption = get_object_or_404(Adoption, id=adoption_id)
+    owner = adoption.owner
+    form_owner = ContractOwnerForm(
         request.POST or None,
         instance=owner
     )
-    if not request.method == 'POST' or not form.is_valid():
+    form_adoption = ContractAdoptionForm(
+        request.POST or None,
+        instance=adoption
+    )
+    if (
+        not request.method == 'POST'
+        or not form_owner.is_valid()
+        or not form_adoption.is_valid()
+         ):
         context = {
-            'form': form,
+            'form_owner': form_owner,
+            'form_adoption': form_adoption,
             'dogs': dogs,
             'contract': True
         }
         return render(request, 'dogs/add_owner.html', context)
-    form.save()
+    form_owner.save()
+    form_adoption.save()
     return redirect('/')
 
 
-def owners_to_contract(request):
-    owners = Owner.objects.filter(
-        contract_signed=False).filter(sobes_status='OK')
+def adoptions_to_contract(request):
+    adoptions = Adoption.objects.filter(contract_signed=False)
     context = {
-        'page_object': paginator(request, owners),
-        'contract': True
+        'page_object': paginator(request, adoptions)
     }
-    return render(request, 'dogs/owners_to_proceed.html', context)
+    return render(request, 'dogs/adoptions_to_proceed.html', context)
