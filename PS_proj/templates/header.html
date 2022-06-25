@@ -1,0 +1,12 @@
+<div class="container py-3" >
+    <aside class="col-12 col-md-4">
+        <a href="{% url 'index:index' %}">
+            <- на главную
+        </a>
+    </aside>
+    <article class="col-12 col-md-8">
+        <a href="{{request.META.HTTP_REFERER}}">
+            <- на предыдущую
+        </a>
+    </article>
+</div>

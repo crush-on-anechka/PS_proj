@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block title %}
+  	Претенденты на собеседование
+{% endblock %}
+{% block content %}
+	<h3 class="container py-3">Претенденты на собеседование</h3>
+	<div class="container py-1">
+		<table class="table table-hover">
+			<thead>
+				<tr>
+					<th scope="col">ФИО</th>
+                    <th scope="col">Добавлен</th>
+				</tr>
+			</thead>
+			{% for object in page_object %}
+			<tbody>
+				<tr>
+					<th scope="row">
+                        <a href="{% url 'dogs:audition' object.id %}">
+                            {{ object }}
+                        </a>
+                    </th>
+					<td>{{ object.add_date|date:'d E Y' }} {{ object.add_date|time:"H:i" }}</td>
+				</tr>
+			</tbody>
+			{% endfor %}
+		</table>
+	</div>
+{% endblock %}

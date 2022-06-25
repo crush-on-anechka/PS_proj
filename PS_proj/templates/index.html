@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block title %}
+  	Главная
+{% endblock %}
+{% block content %}
+	<h3 class="container py-3">Главная</h3>
+    <div class="container py-1">
+        <div class="row">
+            <aside class="col-12 col-md-6">
+                <div class="d-grid gap-2">
+                    <a class="btn btn-lg btn-primary" href="{% url 'dogs:dogs' %}">Каталог собак</a>
+                </div><br>
+                <div class="d-grid gap-2">
+                    <a class="btn btn-lg btn-primary" href="{% url 'dogs:curators' %}">Каталог кураторов</a>
+                </div><br>
+                <div class="d-grid gap-2">
+                    <a class="btn btn-lg btn-primary" href="{% url 'dogs:owners' %}">Каталог хозяев</a>
+                </div><br>
+                <div class="d-grid gap-2">
+                    <a class="btn btn-lg btn-primary" href="{% url 'dogs:potential_owners' %}">Каталог потенциальных хозяев</a>
+                </div><br>
+                <div class="d-grid gap-2">
+                    <a class="btn btn-lg btn-secondary" href="{% url 'dogs:add_dog' %}">Добавить собаку в каталог</a>
+                </div><br>
+                <div class="d-grid gap-2">
+                    <a class="btn btn-lg btn-secondary" href="{% url 'dogs:add_curator' %}">Добавить куратора в каталог</a>
+                </div><br>
+            </aside>
+            <aside class="col-12 col-md-6">
+                <div class="d-grid gap-2">
+                    <a class="btn btn-lg btn-info" href="{% url 'dogs:add_owner' %}">Зарегистрировать потенциального хозяина</a>
+                </div><br>
+                <div class="d-grid gap-2">
+                    <a class="btn btn-lg btn-info" href="{% url 'dogs:owners_to_audit' %}">Провести собеседование</a>
+                </div><br>
+            </aside>
+        </div>
+	</div>
+{% endblock %}

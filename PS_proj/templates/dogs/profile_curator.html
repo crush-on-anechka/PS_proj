@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% block title %}
+    Информация о кураторе
+{% endblock %}
+{% block content %}
+  <div class="container py-5">
+    <div class="row">
+      <aside class="col-12 col-md-4">
+        {% comment %} <img src="{% static 'img/elite.jpg' %}" {% endcomment %}
+        {% comment %} width="400" height="400"
+        class="d-inline-block align-top" alt=""> {% endcomment %}
+      </aside>
+      <article class="col-12 col-md-8">
+        <h3>{{ curator.name }} (куратор)</h3>
+        <ul>
+          <li>
+            Телефон: +7({{ curator.tel|slice:':3' }}){{ curator.tel|slice:'3:' }}
+          </li>
+          <li>
+            Email: {{ curator.email }}
+          </li>
+          <li>
+            Паспорт: {{ curator.passport_no|slice:':4' }} {{ curator.passport_no|slice:'4:' }}<br>
+            Выдан: {{ curator.passport_date }}<br>
+            {{ curator.passport_issued }}<br>
+            Код подразделения: {{ curator.passport_code }}<br>
+          </li>
+          <li>
+            Адрес регистрации: {{ curator.address_reg }}
+          </li>
+          <li>
+            Номер карты Коммондор: {{ curator.discount_card }}
+          </li>
+        </ul>
+        <h3>Собаки</h3>
+        <ul>
+            {% for dog in dogs %}
+                <li>
+                    {{ dog }}
+                </li>
+            {% endfor %}
+        </ul>
+        <a class="btn btn-lg btn-secondary" href="{% url 'dogs:edit_curator' curator.id %}">Редактировать</a>
+      </article>
+    </div>     
+  </div>
+{% endblock %}

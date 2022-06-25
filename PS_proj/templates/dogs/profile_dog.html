@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block title %}
+  Информация о собаке
+{% endblock %}
+{% block content %}
+  <div class="container py-5">
+    <div class="row">
+      <aside class="col-12 col-md-4">
+        {% comment %} <img src="{% static 'img/elite.jpg' %}" {% endcomment %}
+        {% comment %} width="400" height="400"
+        class="d-inline-block align-top" alt=""> {% endcomment %}
+      </aside>
+      <article class="col-12 col-md-8">
+        <h2>{{ dog.name }}</h2><br>        
+        {% if owner %}
+            <h4>Хозяин: {{ owner.name }}</h4>
+            <ul>
+            <li>
+              Телефон: +7({{ owner.tel|slice:':3' }}){{ owner.tel|slice:'3:' }}
+            </li>
+            </ul>
+        {% endif %}
+        <h4>Куратор: {{ dog.curator.name }}</h4>
+        <ul>
+          <li>
+            Телефон: +7({{ dog.curator.tel|slice:':3' }}){{ dog.curator.tel|slice:'3:' }}
+          </li>
+          {% if dog.curator.email %}
+          <li>
+            Email: {{ dog.curator.email }}
+          </li>
+          {% endif %}
+          <li>
+            Приют: {{ dog.curator.pound }}
+          </li>
+        </ul>
+        <a class="btn btn-lg btn-secondary" href="{% url 'dogs:edit_dog' dog.id %}">Редактировать</a>
+        {% if owner %}
+          <a class="btn btn-lg btn-info" href="{% url 'dogs:change_owner' dog.id %}">Поменять хозяина</a>
+        {% endif %}
+      </article>
+    </div>     
+  </div>
+{% endblock %}

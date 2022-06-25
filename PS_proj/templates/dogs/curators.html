@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block title %}
+  	Каталог кураторов
+{% endblock %}
+{% block content %}
+	<h3 class="container py-3">Каталог кураторов</h3>
+	<div class="container py-1">
+		<table class="table table-hover">
+			<thead>
+				<tr>
+					<th scope="col">ФИО</th>
+					<th scope="col">Приют</th>
+                    <th scope="col">Добавлен</th>
+				</tr>
+			</thead>
+			{% for object in page_object %}
+			<tbody>
+				<tr>
+					<th scope="row">
+						<a href="{% url 'dogs:profile_curator' object.id %}">
+                            {{ object }}
+                        </a>
+					</th>
+					<td>{{ object.pound }}</td>
+					<td>{{ object.add_date|date:'d E Y' }}</td>
+				</tr>
+			</tbody>
+			{% endfor %}
+		</table>
+	</div>
+{% endblock %}

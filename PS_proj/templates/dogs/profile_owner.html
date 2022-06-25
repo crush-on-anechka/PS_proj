@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% block title %}
+    Информация о {% if not legitimate %}потенциальном {% endif %}хозяине
+{% endblock %}
+{% block content %}
+  <div class="container py-5">
+    <div class="row">
+      <aside class="col-12 col-md-4">
+        {% comment %} <img src="{% static 'img/elite.jpg' %}" {% endcomment %}
+        {% comment %} width="400" height="400"
+        class="d-inline-block align-top" alt=""> {% endcomment %}
+      </aside>
+      <article class="col-12 col-md-8">
+        <h3>{{ owner.name }} ({% if not legitimate %}потенциальный {% endif %}хозяин)
+        </h3>
+        <ul>
+          <li>
+            Телефон: +7({{ owner.tel|slice:':3' }}){{ owner.tel|slice:'3:' }}
+          </li>
+          {% if owner.email %}
+            <li>
+              Email: {{ owner.email }}
+            </li>
+          {% endif %}
+          {% if owner.passport_no %}
+            <li>
+              Паспорт: {{ owner.passport_no|slice:':4' }} {{ owner.passport_no|slice:'4:' }}<br>
+              Выдан: {{ owner.passport_date }}<br>
+              {{ owner.passport_issued }}<br>
+              Код подразделения: {{ owner.passport_code }}<br>
+            </li>
+            <li>
+              Адрес регистрации: {{ owner.address_reg }}
+            </li>
+            <li>
+              Адрес проживания: {{ owner.address_fact }}
+            </li>
+            <li>
+              Номер карты Коммондор: {{ owner.discount_card }}
+            </li>
+          {% endif %}
+        </ul>
+        {% if dog %}
+          <h3>Собака</h3>
+          <ul>
+              <li>
+                  {{ dog.name }}
+              </li>
+          </ul>
+        {% else %}
+          <ul>
+            <li>
+                Собеседование: {{ owner.get_sobes_status_display }}
+            </li>
+            {% if owner.sobes_result %}
+              <li>
+                  Комментарий зоопсихолога: {{ owner.sobes_result }}
+              </li>
+            {% endif %}
+          </ul>
+        {% endif %}
+        <a class="btn btn-lg btn-secondary" href="{% url 'dogs:edit_owner' owner.id %}">Редактировать</a>
+      </article>
+    </div>     
+  </div>
+{% endblock %}
