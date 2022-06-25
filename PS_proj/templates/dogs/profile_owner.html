@@ -40,12 +40,14 @@
             </li>
           {% endif %}
         </ul>
-        {% if dog %}
-          <h3>Собака</h3>
+        {% if dogs %}
+          <h3>Собак{% if dogs.count > 1 %}и{% else %}а{% endif %}</h3>
           <ul>
-              <li>
-                  {{ dog.name }}
-              </li>
+            {% for dog in dogs %}
+                <li>
+                    <a href="{% url 'dogs:profile_dog' dog.id %}">{{ dog.name }}</a>
+                </li>
+            {% endfor %}
           </ul>
         {% else %}
           <ul>

@@ -3,6 +3,12 @@ from django.contrib.auth import get_user_model
 
 User = get_user_model()
 
+CHOICES = [
+            ('OK', 'Пройдено'),
+            ('DENY', 'Отказ'),
+            ('Not_auditioned', 'Не собеседовался')
+        ]
+
 
 class Curator(models.Model):
     name = models.CharField('ФИО куратора', max_length=200)
@@ -97,17 +103,13 @@ class Owner(models.Model):
     sobes_status = models.CharField(
         'Статус собеседования',
         max_length=200,
-        choices=[
-            ('OK', 'Пройдено'),
-            ('DENY', 'Отказ'),
-            ('Not_auditioned', 'Не собеседовался')
-        ],
+        choices=CHOICES,
         default='Not_auditioned',
         blank=False,
         null=True
     )
     sobes_result = models.TextField(
-        'Отчет зоопсихолога',
+        'Комментарий',
         max_length=1000,
         blank=True,
         null=True
@@ -159,6 +161,22 @@ class Owner(models.Model):
     discount_card = models.CharField(
         'Номер карты Коммондор',
         max_length=10,
+        blank=True,
+        null=True
+    )
+    had_pets = models.BooleanField(
+        'Были ли домашние животные',
+        blank=True,
+        null=True
+    )
+    large_place = models.BooleanField(
+        'Огромная квартира',
+        blank=True,
+        null=True
+    )
+    contract_signed = models.BooleanField(
+        'Договор подписан',
+        default=False,
         blank=True,
         null=True
     )

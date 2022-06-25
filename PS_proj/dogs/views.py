@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from core.paginator import paginator
 from .models import Dog, Curator, Owner, Adoption
 from .forms import (DogForm, CuratorForm, AddOwnerForm, EditOwnerForm,
-                    AuditForm, AdoptionForm, ChangeOwnerForm)
+                    AuditForm, AdoptionForm, ChangeOwnerForm, ContractForm)
 
 
 def dogs(request):
@@ -24,7 +24,7 @@ def curators(request):
 
 def owners(request):
     owners = Owner.objects.exclude(
-        dog_owner__dog__isnull=True).filter(sobes_status='OK')
+        dog_owner__dog__isnull=True).filter(contract_signed=True)
     context = {
         'page_object': paginator(request, owners)
     }
@@ -32,7 +32,7 @@ def owners(request):
 
 
 def potential_owners(request):
-    owners = Owner.objects.exclude(sobes_status='OK')
+    owners = Owner.objects.exclude(contract_signed=False)
     context = {
         'potential': True,
         'page_object': paginator(request, owners)
@@ -119,10 +119,7 @@ def edit_curator(request, curator_id):
 
 def edit_owner(request, owner_id):
     owner = get_object_or_404(Owner, id=owner_id)
-    try:
-        dog = Dog.objects.get(adopted_dog__owner=owner)
-    except Dog.DoesNotExist:
-        dog = False
+    dogs = Dog.objects.filter(adopted_dog__owner=owner)
     form = EditOwnerForm(
         request.POST or None,
         instance=owner
@@ -131,7 +128,7 @@ def edit_owner(request, owner_id):
         form.save()
         return redirect('dogs:owners')
     context = {
-        'dog': dog,
+        'dogs': dogs,
         'is_edit': True,
         'form': form
     }
@@ -140,10 +137,7 @@ def edit_owner(request, owner_id):
 
 def audition(request, owner_id):
     owner = get_object_or_404(Owner, id=owner_id)
-    try:
-        dog = Dog.objects.get(adopted_dog__owner=owner)
-    except Dog.DoesNotExist:
-        dog = False
+    dogs = Dog.objects.filter(adopted_dog__owner=owner)
     form = AuditForm(
         request.POST or None,
         instance=owner
@@ -153,7 +147,7 @@ def audition(request, owner_id):
         return redirect('dogs:owners')
     context = {
         'owner': owner,
-        'dog': dog,
+        'dogs': dogs,
         'audit': True,
         'form': form
     }
@@ -165,7 +159,7 @@ def owners_to_audit(request):
     context = {
         'page_object': paginator(request, owners)
     }
-    return render(request, 'dogs/owners_to_audit.html', context)
+    return render(request, 'dogs/owners_to_proceed.html', context)
 
 
 def profile_dog(request, dog_id):
@@ -193,12 +187,10 @@ def profile_curator(request, curator_id):
 
 def profile_owner(request, owner_id):
     owner = get_object_or_404(Owner, id=owner_id)
-    try:
-        legitimate = (Dog.objects.filter(adopted_dog__owner=owner).get()
-                      and owner.sobes_status == 'OK')
-    except Dog.DoesNotExist:
-        legitimate = False
+    dogs = Dog.objects.filter(adopted_dog__owner=owner)
+    legitimate = dogs and owner.sobes_status == 'OK'
     context = {
+        'dogs': dogs,
         'legitimate': legitimate,
         'owner': owner
     }
@@ -219,3 +211,31 @@ def change_owner(request, dog_id):
         return render(request, 'dogs/change_owner.html', context)
     form.save()
     return redirect('/')
+
+
+def contract(request, owner_id):
+    owner = get_object_or_404(Owner, id=owner_id)
+    dogs = Dog.objects.filter(adopted_dog__owner=owner)
+    form = ContractForm(
+        request.POST or None,
+        instance=owner
+    )
+    if not request.method == 'POST' or not form.is_valid():
+        context = {
+            'form': form,
+            'dogs': dogs,
+            'contract': True
+        }
+        return render(request, 'dogs/add_owner.html', context)
+    form.save()
+    return redirect('/')
+
+
+def owners_to_contract(request):
+    owners = Owner.objects.filter(
+        contract_signed=False).filter(sobes_status='OK')
+    context = {
+        'page_object': paginator(request, owners),
+        'contract': True
+    }
+    return render(request, 'dogs/owners_to_proceed.html', context)

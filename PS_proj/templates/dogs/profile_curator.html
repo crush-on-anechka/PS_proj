@@ -36,7 +36,7 @@
         <ul>
             {% for dog in dogs %}
                 <li>
-                    {{ dog }}
+                  <a href="{% url 'dogs:profile_dog' dog.id %}">{{ dog }}</a>
                 </li>
             {% endfor %}
         </ul>

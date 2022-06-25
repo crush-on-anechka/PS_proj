@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block title %}
+	{% if contract %}
+		Подписание договора
+	{% else %}
+  		Собеседование
+	{% endif %}
+{% endblock %}
+{% block content %}
+	<h3 class="container py-3">
+		{% if contract %}
+			Претенденты на подписание договора
+		{% else %}
+  			Претенденты на собеседование
+		{% endif %}
+	</h3>
+	<div class="container py-1">
+		<table class="table table-hover">
+			<thead>
+				<tr>
+					<th scope="col">ФИО</th>
+                    <th scope="col">Добавлен</th>
+				</tr>
+			</thead>
+			{% for object in page_object %}
+			<tbody>
+				<tr>
+					<th scope="row">
+						{% if contract %}
+							<a href="{% url 'dogs:contract' object.id %}">{{ object }}</a>
+						{% else %}
+                        	<a href="{% url 'dogs:audition' object.id %}">{{ object }}</a>
+						{% endif %}
+                    </th>
+					<td>{{ object.add_date|date:'d E Y' }} {{ object.add_date|time:"H:i" }}</td>
+				</tr>
+			</tbody>
+			{% endfor %}
+		</table>
+		{% include 'dogs/includes/paginator.html' %}
+	</div>
+{% endblock %}

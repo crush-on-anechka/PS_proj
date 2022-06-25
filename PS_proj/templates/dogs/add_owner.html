@@ -4,6 +4,8 @@
     Внести данные хозяина
   {% elif audit %}
     Собеседование
+  {% elif contract %}
+    Договор
   {% else %}
     Зарегистрировать потенциального хозяина
   {% endif %}
@@ -21,6 +23,8 @@
                 Внести данные по результатам собеседования
               {% elif adopt %}
                 Какую собаку пристраиваем?
+              {% elif contract %}
+                Данные для заполнения договора
               {% else %}
                 Зарегистрировать потенциального хозяина
               {% endif %}
@@ -29,14 +33,17 @@
               <form method="post">
                 <action="{% url 'dogs:add_owner' %}">
                 {% csrf_token %}
-                <div class="form-group row p-3">
-                  Потенциальный хозяин: {{ owner.name }}</br>
-                {% if dog %}
-                    Собака: {{ dog }}
-                {% endif %}
-                </div>
+                  {% if audit %}
+                    Потенциальный хозяин: <b>{{ owner.name }}</b></br>
+                  {% endif %}
+                  {% if dogs %}
+                      Собака:
+                      {% for dog in dogs %}
+                        {{ dog }}
+                      {% endfor %}
+                  {% endif %}
                 {% for field in form %}
-                  <div class="form-group row my-3 p-3">
+                  <div class="form-group row my-1 p-3">
                     <span style="color:red">{{ field.errors }}</span>
                     <label >
                       {{ field.label }}
@@ -52,14 +59,15 @@
                 {% endfor %}
                 <div class="d-flex justify-content-end">
                   <button type="submit" class="btn btn-primary">
-                    {% if is_edit %}
-                      Сохранить
-                    {% elif adopt %}
-                      Продолжить
-                    {% else %}
+                    {% if audit %}
                       Добавить
+                    {% else %}
+                      Сохранить
                     {% endif %}
                   </button>
+                  {% if adopt %}
+                    <a class="btn btn btn-secondary" href="{% url 'index:index' %}">Пропустить</a>
+                  {% endif %}
                 </div>
               </form>
             </div>

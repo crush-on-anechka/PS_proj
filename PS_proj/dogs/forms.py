@@ -52,12 +52,47 @@ class EditOwnerForm(forms.ModelForm):
 
 
 class AuditForm(forms.ModelForm):
+    had_pets = forms.BooleanField(
+        label='Были ли домашние животные',
+        required=False
+    )
+    large_place = forms.BooleanField(
+        label='Огромная квартира',
+        required=False
+    )
+
     class Meta:
         model = Owner
-        fields = ['sobes_status', 'sobes_result']
+        fields = ['had_pets',
+                  'large_place',
+                  'sobes_status',
+                  'sobes_result'
+                  ]
 
 
 class ChangeOwnerForm(forms.ModelForm):
     class Meta:
         model = Adoption
         fields = ['dog', 'owner']
+
+
+class ContractForm(forms.ModelForm):
+    contract_signed = forms.BooleanField(
+        label='Договор подписан',
+        required=False
+    )
+
+    class Meta:
+        model = Owner
+        fields = ['name',
+                  'tel',
+                  'passport_no',
+                  'passport_issued',
+                  'passport_code',
+                  'passport_date',
+                  'address_reg',
+                  'address_fact',
+                  'email',
+                  'discount_card',
+                  'contract_signed'
+                  ]

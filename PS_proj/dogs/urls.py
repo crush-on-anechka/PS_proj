@@ -20,8 +20,12 @@ urlpatterns = [
          name='edit_curator'
          ),
     path('edit_owner/<int:owner_id>/', views.edit_owner, name='edit_owner'),
-    path('audition/<int:owner_id>/', views.audition, name='audition'),
-    path('owners_to_audit', views.owners_to_audit, name='owners_to_audit'),
+    path('audition/<int:owner_id>/', views.audition,
+         name='audition'
+         ),
+    path('owners_to_audit', views.owners_to_audit,
+         name='owners_to_audit'
+         ),
     path('profile_dog/<int:dog_id>', views.profile_dog, name='profile_dog'),
     path('profile_curator/<int:curator_id>', views.profile_curator,
          name='profile_curator'
@@ -31,5 +35,11 @@ urlpatterns = [
          ),
     path('change_owner/<int:dog_id>/', views.change_owner,
          name='change_owner'
+         ),
+    path('contract/<int:owner_id>/', views.contract,
+         name='contract'
+         ),
+    path('owners_to_contract', views.owners_to_contract,
+         name='owners_to_contract'
          )
 ]

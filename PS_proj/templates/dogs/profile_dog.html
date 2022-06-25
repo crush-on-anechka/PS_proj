@@ -13,14 +13,18 @@
       <article class="col-12 col-md-8">
         <h2>{{ dog.name }}</h2><br>        
         {% if owner %}
-            <h4>Хозяин: {{ owner.name }}</h4>
+            <h4>Хозяин: 
+              <a href="{% url 'dogs:profile_owner' owner.id %}">{{ owner.name }}</a>
+            </h4>
             <ul>
             <li>
               Телефон: +7({{ owner.tel|slice:':3' }}){{ owner.tel|slice:'3:' }}
             </li>
             </ul>
         {% endif %}
-        <h4>Куратор: {{ dog.curator.name }}</h4>
+        <h4>Куратор: 
+          <a href="{% url 'dogs:profile_curator' dog.curator.id %}">{{ dog.curator.name }}</a>
+        </h4>
         <ul>
           <li>
             Телефон: +7({{ dog.curator.tel|slice:':3' }}){{ dog.curator.tel|slice:'3:' }}

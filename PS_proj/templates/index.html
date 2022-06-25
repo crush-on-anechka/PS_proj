@@ -14,7 +14,7 @@
                     <a class="btn btn-lg btn-primary" href="{% url 'dogs:curators' %}">Каталог кураторов</a>
                 </div><br>
                 <div class="d-grid gap-2">
-                    <a class="btn btn-lg btn-primary" href="{% url 'dogs:owners' %}">Каталог хозяев</a>
+                    <a class="btn btn-lg btn-primary" href="{% url 'dogs:owners' %}">Каталог хозяев (подписан договор)</a>
                 </div><br>
                 <div class="d-grid gap-2">
                     <a class="btn btn-lg btn-primary" href="{% url 'dogs:potential_owners' %}">Каталог потенциальных хозяев</a>
@@ -32,6 +32,9 @@
                 </div><br>
                 <div class="d-grid gap-2">
                     <a class="btn btn-lg btn-info" href="{% url 'dogs:owners_to_audit' %}">Провести собеседование</a>
+                </div><br>
+                <div class="d-grid gap-2">
+                    <a class="btn btn-lg btn-info" href="{% url 'dogs:owners_to_contract' %}">Заполнить договор</a>
                 </div><br>
             </aside>
         </div>
