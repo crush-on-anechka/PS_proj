@@ -11,9 +11,6 @@
 			<thead>
 				<tr>
 					<th scope="col">ФИО</th>
-					{% if potential %}
-						<th scope="col">Собеседование</th>
-					{% endif %}	
                     <th scope="col">Email</th>
                     <th scope="col">Телефон</th>
                     <th scope="col">Добавлен</th>
@@ -27,9 +24,6 @@
                             {{ object }}
                         </a>
                     </th>
-					{% if potential %}
-						<td>{{ object.get_sobes_status_display }}</td>
-					{% endif %}
 					<td>
 					{% if object.email %}{{ object.email }}{% endif %}
 					</td>

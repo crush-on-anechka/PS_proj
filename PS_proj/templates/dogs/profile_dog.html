@@ -40,7 +40,7 @@
         </ul>
         <a class="btn btn-lg btn-secondary" href="{% url 'dogs:edit_dog' dog.id %}">Редактировать</a>
         {% if owner %}
-          <a class="btn btn-lg btn-info" href="{% url 'dogs:change_owner' dog.id %}">Поменять хозяина</a>
+          <a class="btn btn-lg btn-info" href="{% url 'dogs:change_owner' adoption.id %}">Поменять хозяина</a>
         {% endif %}
       </article>
     </div>     

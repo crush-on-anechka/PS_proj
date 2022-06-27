@@ -161,7 +161,10 @@ def audition(request, adoption_id):
 
 
 def owners_to_audit(request):
-    adoptions = Adoption.objects.filter(sobes_status='Not_auditioned')
+    adoptions = Adoption.objects.filter(
+        sobes_status='Not_auditioned',
+        contract_signed='False'
+    )
     context = {
         'page_object': paginator(request, adoptions)
     }
@@ -171,12 +174,18 @@ def owners_to_audit(request):
 def profile_dog(request, dog_id):
     dog = get_object_or_404(Dog, id=dog_id)
     try:
-        owner = Owner.objects.filter(dog_owner__dog=dog).get()
+        owner = Owner.objects.filter(
+            dog_owner__dog=dog,
+            dog_owner__contract_signed=True
+        ).get()
+        adoption = Adoption.objects.get(owner=owner, dog=dog)
     except Owner.DoesNotExist:
         owner = False
+        adoption = False
     context = {
         'dog': dog,
-        'owner': owner
+        'owner': owner,
+        'adoption': adoption
     }
     return render(request, 'dogs/profile_dog.html', context)
 
@@ -193,16 +202,21 @@ def profile_curator(request, curator_id):
 
 def profile_owner(request, owner_id):
     owner = get_object_or_404(Owner, id=owner_id)
-    dogs = Dog.objects.filter(adopted_dog__owner=owner)
+    dogs = Dog.objects.filter(
+        adopted_dog__owner=owner,
+        adopted_dog__contract_signed=True
+    )
+    adoptions = Adoption.objects.filter(owner=owner)
     context = {
         'dogs': dogs,
-        'owner': owner
+        'owner': owner,
+        'adoptions': adoptions
     }
     return render(request, 'dogs/profile_owner.html', context)
 
 
-def change_owner(request, dog_id):
-    adoption = get_object_or_404(Adoption, dog=dog_id)
+def change_owner(request, adoption_id):
+    adoption = get_object_or_404(Adoption, id=adoption_id)
     form = ChangeOwnerForm(
         request.POST or None,
         instance=adoption
@@ -210,7 +224,7 @@ def change_owner(request, dog_id):
     if not request.method == 'POST' or not form.is_valid():
         context = {
             'form': form,
-            'dog_id': dog_id
+            'adoption_id': adoption_id
         }
         return render(request, 'dogs/change_owner.html', context)
     form.save()
@@ -251,3 +265,11 @@ def adoptions_to_contract(request):
         'page_object': paginator(request, adoptions)
     }
     return render(request, 'dogs/adoptions_to_proceed.html', context)
+
+
+def adoption_info(request, adoption_id):
+    adoption = get_object_or_404(Adoption, id=adoption_id)
+    context = {
+        'adoption': adoption
+    }
+    return render(request, 'dogs/adoption_info.html', context)

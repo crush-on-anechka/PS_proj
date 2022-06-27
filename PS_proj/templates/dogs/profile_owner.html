@@ -50,6 +50,17 @@
             {% endfor %}
           </ul>
         {% endif %}
+        {% if adoptions %}
+          <h3>Пристройств{% if adoptions.count > 1 %}а{% else %}о{% endif %}</h3>
+          <ul>
+            {% for adoption in adoptions %}
+                <li>
+                  <a href="{% url 'dogs:adoption_info' adoption.id %}">{{ adoption }}</a>
+                  {% if not adoption.contract_signed %}(не состоялось){% endif %}
+                </li>
+            {% endfor %}
+          </ul>
+        {% endif %}
         <a class="btn btn-lg btn-secondary" href="{% url 'dogs:edit_owner' owner.id %}">Редактировать</a>
       </article>
     </div>     

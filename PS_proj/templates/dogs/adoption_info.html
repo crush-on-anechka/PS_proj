@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block title %}
+    Пристройство
+{% endblock %}
+{% block content %}
+  <div class="container py-5">
+    <div class="row">
+      <aside class="col-12 col-md-4">
+        {% comment %} <img src="{% static 'img/elite.jpg' %}" {% endcomment %}
+        {% comment %} width="400" height="400"
+        class="d-inline-block align-top" alt=""> {% endcomment %}
+      </aside>
+      <article class="col-12 col-md-8">
+        <h3>{{ adoption.owner }} и <a href="{% url 'dogs:profile_dog' adoption.dog.id %}">{{ adoption.dog }}</a></h3>
+        <ul>
+          {% if adoption.contract_signed %}
+            <span style="color:blue">Договор подписан</span>
+          {% else %}
+            <span style="color:red">Договор не подписан</span>
+          {% endif %}
+        </ul>
+        <ul>
+          <li>
+            <b>Дата:</b> {{ adoption.add_date|date:'d E Y' }}
+          </li>
+          <li>
+          <b>Собеседование:</b> {{ adoption.get_sobes_status_display }}<br>
+            {% if adoption.sobes_result %}
+              Комментарий: {{ adoption.sobes_result }}
+              {% endif %}
+          </li>
+          <li>
+          <b>Анкета:</b><br>
+            Были ли домашние животные: {% if adoption.had_pets %}Да{% else %}Нет{% endif %}<br>
+            Огромная квартира: {% if adoption.large_place %}Да{% else %}Нет{% endif %}
+          </li
+        </ul>
+      </article>
+    </div>     
+  </div>
+{% endblock %}
