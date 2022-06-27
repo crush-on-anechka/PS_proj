@@ -36,7 +36,7 @@ urlpatterns = [
     path('adoption_info/<int:adoption_id>', views.adoption_info,
          name='adoption_info'
          ),
-    path('change_owner/<int:adoption_id>/', views.change_owner,
+    path('change_owner/<int:dog_id>/', views.change_owner,
          name='change_owner'
          ),
     path('contract/<int:adoption_id>/', views.contract,

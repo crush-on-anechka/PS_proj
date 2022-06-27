@@ -178,14 +178,11 @@ def profile_dog(request, dog_id):
             dog_owner__dog=dog,
             dog_owner__contract_signed=True
         ).get()
-        adoption = Adoption.objects.get(owner=owner, dog=dog)
     except Owner.DoesNotExist:
         owner = False
-        adoption = False
     context = {
         'dog': dog,
-        'owner': owner,
-        'adoption': adoption
+        'owner': owner
     }
     return render(request, 'dogs/profile_dog.html', context)
 
@@ -215,18 +212,17 @@ def profile_owner(request, owner_id):
     return render(request, 'dogs/profile_owner.html', context)
 
 
-def change_owner(request, adoption_id):
-    adoption = get_object_or_404(Adoption, id=adoption_id)
-    form = ChangeOwnerForm(
-        request.POST or None,
-        instance=adoption
-    )
+def change_owner(request, dog_id):
+    dog = get_object_or_404(Dog, pk=dog_id)
+    form = ChangeOwnerForm(request.POST or None)
     if not request.method == 'POST' or not form.is_valid():
         context = {
             'form': form,
-            'adoption_id': adoption_id
+            'dog': dog
         }
         return render(request, 'dogs/change_owner.html', context)
+    instance = form.save(commit=False)
+    instance.dog = dog
     form.save()
     return redirect('/')
 
@@ -260,7 +256,8 @@ def contract(request, adoption_id):
 
 
 def adoptions_to_contract(request):
-    adoptions = Adoption.objects.filter(contract_signed=False)
+    adoptions = Adoption.objects.filter(contract_signed=False).exclude(
+        sobes_status='DENY')
     context = {
         'page_object': paginator(request, adoptions)
     }

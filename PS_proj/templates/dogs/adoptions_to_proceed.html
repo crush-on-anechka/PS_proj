@@ -12,6 +12,7 @@
 				<tr>
 					<th scope="col">Пристройство</th>
                     <th scope="col">Добавлено</th>
+                    <th scope="col">Собеседование</th>
 				</tr>
 			</thead>
 			{% for object in page_object %}
@@ -20,6 +21,7 @@
 					<th scope="row">
                         <a href="{% url 'dogs:contract' object.id %}">{{ object }}</a>
                     </th>
+					<td>{{ object.get_sobes_status_display }}</td>
 					<td>{{ object.add_date|date:'d E Y' }} {{ object.add_date|time:"H:i" }}</td>
 				</tr>
 			</tbody>

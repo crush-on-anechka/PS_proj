@@ -29,11 +29,13 @@
               Комментарий: {{ adoption.sobes_result }}
               {% endif %}
           </li>
-          <li>
-          <b>Анкета:</b><br>
-            Были ли домашние животные: {% if adoption.had_pets %}Да{% else %}Нет{% endif %}<br>
-            Огромная квартира: {% if adoption.large_place %}Да{% else %}Нет{% endif %}
-          </li
+          {% if not adoption.sobes_status == 'Not_auditioned' %}
+            <li>
+            <b>Анкета:</b><br>
+              Были ли домашние животные: {% if adoption.had_pets %}Да{% else %}Нет{% endif %}<br>
+              Огромная квартира: {% if adoption.large_place %}Да{% else %}Нет{% endif %}
+            </li
+          {% endif %}
         </ul>
       </article>
     </div>     

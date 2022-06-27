@@ -73,7 +73,7 @@ class AuditForm(forms.ModelForm):
 class ChangeOwnerForm(forms.ModelForm):
     class Meta:
         model = Adoption
-        fields = ['dog', 'owner']
+        fields = ['owner']
 
 
 class ContractOwnerForm(forms.ModelForm):
