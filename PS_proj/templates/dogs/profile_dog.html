@@ -18,7 +18,7 @@
             </h4>
             <ul>
             <li>
-              Телефон: +7({{ owner.tel|slice:':3' }}){{ owner.tel|slice:'3:' }}
+              Телефон: +7-{{ owner.tel|slice:':3' }}-{{ owner.tel|slice:'3:' }}
             </li>
             </ul>
         {% endif %}
@@ -27,7 +27,7 @@
         </h4>
         <ul>
           <li>
-            Телефон: +7({{ dog.curator.tel|slice:':3' }}){{ dog.curator.tel|slice:'3:' }}
+            Телефон: +7-{{ dog.curator.tel|slice:':3' }}-{{ dog.curator.tel|slice:'3:' }}
           </li>
           {% if dog.curator.email %}
           <li>
@@ -39,9 +39,6 @@
           </li>
         </ul>
         <a class="btn btn-lg btn-secondary" href="{% url 'dogs:edit_dog' dog.id %}">Редактировать</a>
-        {% if owner %}
-          <a class="btn btn-lg btn-info" href="{% url 'dogs:change_owner' dog.id %}">Поменять хозяина</a>
-        {% endif %}
       </article>
     </div>     
   </div>

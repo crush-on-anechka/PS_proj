@@ -11,11 +11,13 @@
         class="d-inline-block align-top" alt=""> {% endcomment %}
       </aside>
       <article class="col-12 col-md-8">
-        <h3>{{ owner.name }} (хозяин)
+        <h3>
+          {{ owner.name }}
+          ({% if not contract_signed %}потенциальный {% endif %}хозяин)
         </h3>
         <ul>
           <li>
-            Телефон: +7({{ owner.tel|slice:':3' }}){{ owner.tel|slice:'3:' }}
+            Телефон: +7-{{ owner.tel|slice:':3' }}-{{ owner.tel|slice:'3:' }}
           </li>
           {% if owner.email %}
             <li>
@@ -25,20 +27,22 @@
           {% if owner.passport_no %}
             <li>
               Паспорт: {{ owner.passport_no|slice:':4' }} {{ owner.passport_no|slice:'4:' }}<br>
-              Выдан: {{ owner.passport_date }}<br>
-              {{ owner.passport_issued }}<br>
-              Код подразделения: {{ owner.passport_code }}<br>
+              Кем выдан: {{ owner.passport_issued|default_if_none:"нет информации" }}<br>
+              Когда выдан: {{ owner.passport_date|default_if_none:"нет информации" }}<br>
+              Код подразделения: {{ owner.passport_code|default_if_none:"нет информации" }}<br>
             </li>
             <li>
-              Адрес регистрации: {{ owner.address_reg }}
+              Адрес регистрации: {{ owner.address_reg|default_if_none:"нет информации" }}
             </li>
             <li>
-              Адрес проживания: {{ owner.address_fact }}
+              Адрес проживания: {{ owner.address_fact|default_if_none:"нет информации" }}
             </li>
-            <li>
-              Номер карты Коммондор: {{ owner.discount_card }}
-            </li>
+          {% else %}
+            Паспорт: нет информации
           {% endif %}
+          <li>
+            Карта Коммондор: {{ owner.discount_card|default_if_none:"нет" }}
+          </li>
         </ul>
         {% if dogs %}
           <h3>Собак{% if dogs.count > 1 %}и{% else %}а{% endif %}</h3>

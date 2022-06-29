@@ -84,6 +84,11 @@ class Dog(models.Model):
         'Дата добавления',
         auto_now_add=True
     )
+    image = models.ImageField(
+        'Фото',
+        upload_to='dogs/',
+        blank=True
+    )
 
     class Meta:
         ordering = ['name']
@@ -214,6 +219,10 @@ class Adoption(models.Model):
             models.UniqueConstraint(
                 fields=['owner', 'dog'],
                 name='unique_adoption'
+            ),
+            models.UniqueConstraint(
+                fields=['dog', 'contract_signed'],
+                name='unique_contract'
             )
         ]
         ordering = ['-add_date']

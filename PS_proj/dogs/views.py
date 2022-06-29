@@ -2,8 +2,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from core.paginator import paginator
 from .models import Dog, Curator, Owner, Adoption
 from .forms import (DogForm, CuratorForm, AddOwnerForm, ContractOwnerForm,
-                    AuditForm, AdoptionForm, ChangeOwnerForm, EditOwnerForm,
-                    ContractAdoptionForm)
+                    AuditForm, AdoptionForm, EditOwnerForm,
+                    ContractAdoptionForm, AdoptionExistOwnerForm)
 
 
 def dogs(request):
@@ -86,6 +86,18 @@ def add_adoption(request, owner_id):
 
     instance = form_owner.save(commit=False)
     instance.owner = owner
+    form_owner.save()
+    return redirect('/')
+
+
+def adoption_exist_owner(request):
+    form_owner = AdoptionExistOwnerForm(request.POST or None)
+    if not request.method == 'POST' or not form_owner.is_valid():
+        context = {
+            'form_owner': form_owner,
+            'adopt_exist': True
+        }
+        return render(request, 'dogs/add_owner.html', context)
     form_owner.save()
     return redirect('/')
 
@@ -204,27 +216,14 @@ def profile_owner(request, owner_id):
         adopted_dog__contract_signed=True
     )
     adoptions = Adoption.objects.filter(owner=owner)
+    contract_signed = any([i.contract_signed for i in adoptions])
     context = {
         'dogs': dogs,
         'owner': owner,
-        'adoptions': adoptions
+        'adoptions': adoptions,
+        'contract_signed': contract_signed
     }
     return render(request, 'dogs/profile_owner.html', context)
-
-
-def change_owner(request, dog_id):
-    dog = get_object_or_404(Dog, pk=dog_id)
-    form = ChangeOwnerForm(request.POST or None)
-    if not request.method == 'POST' or not form.is_valid():
-        context = {
-            'form': form,
-            'dog': dog
-        }
-        return render(request, 'dogs/change_owner.html', context)
-    instance = form.save(commit=False)
-    instance.dog = dog
-    form.save()
-    return redirect('/')
 
 
 def contract(request, adoption_id):

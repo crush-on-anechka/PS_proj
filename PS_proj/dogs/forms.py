@@ -8,13 +8,15 @@ class DogForm(forms.ModelForm):
         fields = '__all__'
         labels = {
             'name': 'Кличка собаки',
-            'curator': 'ФИО куратора'
+            'curator': 'ФИО куратора',
+            'image': 'Фото собаки'
 
         }
         help_texts = {
             'curator':
             'Если куратора нет в списке, необходимо сначала '
-            'добавить его в каталог кураторов'
+            'добавить его в каталог кураторов',
+            'image': 'Загрузить фото собаки'
         }
 
 
@@ -45,6 +47,12 @@ class AdoptionForm(forms.ModelForm):
         fields = ['dog']
 
 
+class AdoptionExistOwnerForm(forms.ModelForm):
+    class Meta:
+        model = Adoption
+        fields = ['dog', 'owner']
+
+
 class EditOwnerForm(forms.ModelForm):
     class Meta:
         model = Owner
@@ -68,12 +76,6 @@ class AuditForm(forms.ModelForm):
                   'sobes_status',
                   'sobes_result'
                   ]
-
-
-class ChangeOwnerForm(forms.ModelForm):
-    class Meta:
-        model = Adoption
-        fields = ['owner']
 
 
 class ContractOwnerForm(forms.ModelForm):

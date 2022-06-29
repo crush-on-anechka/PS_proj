@@ -14,20 +14,26 @@
         <h3>{{ curator.name }} (куратор)</h3>
         <ul>
           <li>
-            Телефон: +7({{ curator.tel|slice:':3' }}){{ curator.tel|slice:'3:' }}
+            Телефон: +7-{{ curator.tel|slice:':3' }}-{{ curator.tel|slice:'3:' }}
           </li>
-          <li>
-            Email: {{ curator.email }}
-          </li>
+          {% if curator.email %}
+            <li>
+              Email: {{ curator.email }}
+            </li>
+          {% endif %}
+          {% if curator.passport_no %}
           <li>
             Паспорт: {{ curator.passport_no|slice:':4' }} {{ curator.passport_no|slice:'4:' }}<br>
-            Выдан: {{ curator.passport_date }}<br>
-            {{ curator.passport_issued }}<br>
-            Код подразделения: {{ curator.passport_code }}<br>
+            Кем выдан: {{ curator.passport_issued|default_if_none:"нет информации" }}<br>
+            Когда выдан: {{ curator.passport_date|default_if_none:"нет информации" }}<br>
+            Код подразделения: {{ curator.passport_code|default_if_none:"нет информации" }}<br>
           </li>
           <li>
-            Адрес регистрации: {{ curator.address_reg }}
+            Адрес регистрации: {{ curator.address_reg|default_if_none:"нет информации" }}
           </li>
+        {% else %}
+          Паспорт: нет информации
+        {% endif %}
         </ul>
         <h3>Собаки</h3>
         <ul>

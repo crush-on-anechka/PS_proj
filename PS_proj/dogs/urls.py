@@ -15,6 +15,9 @@ urlpatterns = [
     path('add_adoption/<int:owner_id>/', views.add_adoption,
          name='add_adoption'
          ),
+    path('adoption_exist_owner', views.adoption_exist_owner,
+         name='adoption_exist_owner'
+         ),
     path('edit_dog/<int:dog_id>/', views.edit_dog, name='edit_dog'),
     path('edit_curator/<int:curator_id>/', views.edit_curator,
          name='edit_curator'
@@ -35,9 +38,6 @@ urlpatterns = [
          ),
     path('adoption_info/<int:adoption_id>', views.adoption_info,
          name='adoption_info'
-         ),
-    path('change_owner/<int:dog_id>/', views.change_owner,
-         name='change_owner'
          ),
     path('contract/<int:adoption_id>/', views.contract,
          name='contract'

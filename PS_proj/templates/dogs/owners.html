@@ -27,7 +27,7 @@
 					<td>
 					{% if object.email %}{{ object.email }}{% endif %}
 					</td>
-                    <td>+7{{ object.tel }}</td>
+                    <td>+7-{{ object.tel|slice:':3' }}-{{ object.tel|slice:'3:' }}</td>
 					<td>{{ object.add_date|date:'d E Y' }}</td>
 				</tr>
 			</tbody>
