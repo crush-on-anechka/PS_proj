@@ -84,11 +84,11 @@ class Dog(models.Model):
         'Дата добавления',
         auto_now_add=True
     )
-    image = models.ImageField(
-        'Фото',
-        upload_to='dogs/',
-        blank=True
-    )
+    # image = models.ImageField(
+    #     'Фото',
+    #     upload_to='dogs/',
+    #     blank=True
+    # )
 
     class Meta:
         ordering = ['name']
