@@ -66,7 +66,14 @@ With __PS_proj__ you get:
 - Django 4.0.5
 
 ## Running project in dev mode
-- Install and activate your virtual environment
+- Install your virtual environment to project folder, run:
+```
+python3 -m venv venv
+``` 
+- To activate your virtual environment run:
+```
+source venv/bin/activate
+``` 
 - To install relations from requirements.txt run:
 ```
 pip install -r requirements.txt
@@ -74,6 +81,10 @@ pip install -r requirements.txt
 - Go to the folder having manage.py file and run:
 ```
 python3 manage.py runserver
+```
+- Open your browser and go tos:
+```
+127.0.0.1:8000
 ```
 ## Recommendations and Concerns 
 
