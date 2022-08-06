@@ -38,6 +38,7 @@ In case of any discontent or if you have your high value recommendations
 send your inquires directly to [Vladimir Putin] via his [official site][df1]
 
 _No rights reserved_
+
 _I hate porcupine tree_
 
    [Vladimir Putin]: <https://ru.wikipedia.org/wiki/Путин,_Владимир_Владимирович>
