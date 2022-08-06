@@ -41,4 +41,4 @@ _No rights reserved_
 _I hate porcupine tree_
 
    [Vladimir Putin]: <https://ru.wikipedia.org/wiki/Путин,_Владимир_Владимирович>
-   [df1]: <http://www.kremlin.ru># PS_proj
+   [df1]: <http://www.kremlin.ru>
